@@ -1,4 +1,12 @@
-import init, { ZecknaWallet, wasm_generate_seed_phrase, wasm_validate_seed_phrase } from '@zeckna/core';
+import init, {
+  ZecknaWallet,
+  wasm_generate_seed_phrase,
+  wasm_validate_seed_phrase,
+  wasm_generate_shielded_address,
+  wasm_generate_transparent_address,
+  wasm_validate_address,
+  wasm_export_view_key,
+} from '@zeckna/core';
 
 let wasmInitialized = false;
 
@@ -36,5 +44,13 @@ export function ensureWasmInitialized(): void {
 }
 
 // Re-export WASM functions
-export { ZecknaWallet, wasm_generate_seed_phrase, wasm_validate_seed_phrase };
+export {
+  ZecknaWallet,
+  wasm_generate_seed_phrase,
+  wasm_validate_seed_phrase,
+  wasm_generate_shielded_address,
+  wasm_generate_transparent_address,
+  wasm_validate_address,
+  wasm_export_view_key,
+};
 

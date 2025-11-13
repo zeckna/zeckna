@@ -9,7 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import {StorageService} from '../services/StorageService';
-import {wasm_export_view_key} from '@zeckna/sdk';
+import {wasm_export_view_key} from '@zeckna/sdk/src/wasm-loader';
 import {useWallet} from '../hooks/useWallet';
 
 export default function SettingsScreen() {
