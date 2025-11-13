@@ -1,0 +1,37 @@
+{
+  "name": "@zeckna/sdk",
+  "version": "0.1.0",
+  "description": "Zeckna SDK - TypeScript wrapper for Zeckna Core WASM",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@zeckna/core": "workspace:*",
+    "@solana/web3.js": "^1.87.6",
+    "bip39": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/bip39": "^3.0.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "rimraf": "^5.0.5"
+  },
+  "keywords": [
+    "zcash",
+    "solana",
+    "wallet",
+    "sdk",
+    "privacy"
+  ],
+  "author": "Zeckna Team",
+  "license": "MIT"
+}
+

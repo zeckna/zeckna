@@ -1,0 +1,25 @@
+{
+  "name": "@zeckna/core",
+  "version": "0.1.0",
+  "description": "Zeckna Core - Rust library compiled to WASM for Zcash operations",
+  "main": "pkg/zeckna_core.js",
+  "types": "pkg/zeckna_core.d.ts",
+  "files": [
+    "pkg"
+  ],
+  "scripts": {
+    "build": "powershell -ExecutionPolicy Bypass -File build.ps1",
+    "build:unix": "bash build.sh",
+    "clean": "cargo clean && if exist pkg rmdir /s /q pkg",
+    "test": "cargo test"
+  },
+  "keywords": [
+    "zcash",
+    "wallet",
+    "privacy",
+    "wasm"
+  ],
+  "author": "Zeckna Team",
+  "license": "MIT"
+}
+
