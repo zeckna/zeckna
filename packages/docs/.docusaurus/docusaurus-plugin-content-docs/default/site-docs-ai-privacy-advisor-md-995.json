@@ -1,0 +1,28 @@
+{
+  "id": "ai/privacy-advisor",
+  "title": "Privacy Advisor",
+  "description": "The Privacy Advisor scores planned actions and recommends mitigations when they violate user-defined policies.",
+  "source": "@site/docs/ai/privacy-advisor.md",
+  "sourceDirName": "ai",
+  "slug": "/ai/privacy-advisor",
+  "permalink": "/docs/ai/privacy-advisor",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/ai/privacy-advisor.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Privacy Advisor",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "AI Agent Overview",
+    "permalink": "/docs/ai/overview"
+  },
+  "next": {
+    "title": "Transaction Pipelines",
+    "permalink": "/docs/ai/transaction-pipelines"
+  }
+}

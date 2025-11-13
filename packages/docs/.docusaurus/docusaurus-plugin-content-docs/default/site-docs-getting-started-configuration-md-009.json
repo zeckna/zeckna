@@ -1,0 +1,28 @@
+{
+  "id": "getting-started/configuration",
+  "title": "Configuration & Environment",
+  "description": "Secure configuration keeps shielded keys private while enabling AI services to reason over wallet data.",
+  "source": "@site/docs/getting-started/configuration.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/configuration",
+  "permalink": "/docs/getting-started/configuration",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/getting-started/configuration.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Configuration & Environment",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Workspace Layout",
+    "permalink": "/docs/getting-started/workspaces"
+  },
+  "next": {
+    "title": "SDK Quickstart",
+    "permalink": "/docs/sdk/quickstart"
+  }
+}

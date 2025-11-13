@@ -1,0 +1,28 @@
+{
+  "id": "wallet/architecture",
+  "title": "Wallet Architecture",
+  "description": "The React Native wallet orchestrates UI flows on top of the SDK and AI services. Key layers:",
+  "source": "@site/docs/wallet/architecture.md",
+  "sourceDirName": "wallet",
+  "slug": "/wallet/architecture",
+  "permalink": "/docs/wallet/architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/wallet/architecture.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Wallet Architecture",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Transaction Pipelines",
+    "permalink": "/docs/ai/transaction-pipelines"
+  },
+  "next": {
+    "title": "Secure Storage",
+    "permalink": "/docs/wallet/storage"
+  }
+}

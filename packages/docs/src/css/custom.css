@@ -1,0 +1,53 @@
+:root {
+  --ifm-color-primary: #4ecbff;
+  --ifm-color-primary-dark: #37b6ea;
+  --ifm-color-primary-darker: #2fa2d0;
+  --ifm-color-primary-darkest: #227aa0;
+  --ifm-color-primary-light: #6fd7ff;
+  --ifm-color-primary-lighter: #8be0ff;
+  --ifm-color-primary-lightest: #b2ecff;
+  --ifm-background-color: #050a18;
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ifm-navbar-background-color: rgba(5, 10, 24, 0.9);
+  --ifm-footer-background-color: #050a18;
+}
+
+html[data-theme='dark'] {
+  --ifm-background-color: #050a18;
+  --ifm-background-surface-color: #0b1026;
+  --ifm-navbar-background-color: rgba(5, 10, 24, 0.9);
+  --ifm-footer-background-color: #050a18;
+}
+
+.heroBanner {
+  background: radial-gradient(circle at top, rgba(0, 255, 163, 0.25), rgba(220, 31, 255, 0.15), transparent 70%);
+  text-align: left;
+  padding: 6rem 0;
+}
+
+.heroBanner h1 {
+  font-weight: 700;
+}
+
+.button.button--secondary {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.button.button--secondary:hover,
+.button.button--secondary:focus {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.button.button--link {
+  color: #f7c562;
+}
+
+.button.button--link:hover,
+.button.button--link:focus {
+  color: #f9d27f;
+}

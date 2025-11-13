@@ -1,0 +1,28 @@
+{
+  "id": "sdk/keys",
+  "title": "Key Management",
+  "description": "Zeckna wraps the Rust core’s key derivation helpers to produce seed phrases, spending keys, and viewing keys.",
+  "source": "@site/docs/sdk/keys.md",
+  "sourceDirName": "sdk",
+  "slug": "/sdk/keys",
+  "permalink": "/docs/sdk/keys",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/sdk/keys.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Key Management",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "SDK Quickstart",
+    "permalink": "/docs/sdk/quickstart"
+  },
+  "next": {
+    "title": "Transaction APIs",
+    "permalink": "/docs/sdk/transactions"
+  }
+}

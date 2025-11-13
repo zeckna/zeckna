@@ -1,0 +1,28 @@
+{
+  "id": "wallet/mobile",
+  "title": "Mobile Build Targets",
+  "description": "The React Native application is configured for both iOS and Android using Expo-less bare workflows.",
+  "source": "@site/docs/wallet/mobile.md",
+  "sourceDirName": "wallet",
+  "slug": "/wallet/mobile",
+  "permalink": "/docs/wallet/mobile",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/wallet/mobile.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Mobile Build Targets",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Secure Storage",
+    "permalink": "/docs/wallet/storage"
+  },
+  "next": {
+    "title": "Core (Rust) Reference",
+    "permalink": "/docs/reference/core"
+  }
+}

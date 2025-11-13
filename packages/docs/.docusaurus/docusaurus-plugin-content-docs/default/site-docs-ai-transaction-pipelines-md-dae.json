@@ -1,0 +1,28 @@
+{
+  "id": "ai/transaction-pipelines",
+  "title": "Transaction Pipelines",
+  "description": "Pipelines coordinate parsing, policy checks, and transaction building with explicit checkpoints. They help you mix automated steps with human approvals.",
+  "source": "@site/docs/ai/transaction-pipelines.md",
+  "sourceDirName": "ai",
+  "slug": "/ai/transaction-pipelines",
+  "permalink": "/docs/ai/transaction-pipelines",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/ai/transaction-pipelines.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Transaction Pipelines",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Privacy Advisor",
+    "permalink": "/docs/ai/privacy-advisor"
+  },
+  "next": {
+    "title": "Wallet Architecture",
+    "permalink": "/docs/wallet/architecture"
+  }
+}

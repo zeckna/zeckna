@@ -1,0 +1,28 @@
+{
+  "id": "reference/core",
+  "title": "Core (Rust) Reference",
+  "description": "The @zeckna/core package wraps the Rust library compiled via wasm-pack. Key modules:",
+  "source": "@site/docs/reference/core.md",
+  "sourceDirName": "reference",
+  "slug": "/reference/core",
+  "permalink": "/docs/reference/core",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/reference/core.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Core (Rust) Reference",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Mobile Build Targets",
+    "permalink": "/docs/wallet/mobile"
+  },
+  "next": {
+    "title": "SDK Reference",
+    "permalink": "/docs/reference/sdk"
+  }
+}

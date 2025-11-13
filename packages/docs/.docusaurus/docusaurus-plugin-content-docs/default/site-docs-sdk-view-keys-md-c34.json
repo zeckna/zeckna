@@ -1,0 +1,28 @@
+{
+  "id": "sdk/view-keys",
+  "title": "Viewing Keys",
+  "description": "Viewing keys allow third parties to monitor incoming and outgoing shielded transactions without enabling spends.",
+  "source": "@site/docs/sdk/view-keys.md",
+  "sourceDirName": "sdk",
+  "slug": "/sdk/view-keys",
+  "permalink": "/docs/sdk/view-keys",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/sdk/view-keys.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "title": "Viewing Keys",
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Transaction APIs",
+    "permalink": "/docs/sdk/transactions"
+  },
+  "next": {
+    "title": "AI Agent Overview",
+    "permalink": "/docs/ai/overview"
+  }
+}

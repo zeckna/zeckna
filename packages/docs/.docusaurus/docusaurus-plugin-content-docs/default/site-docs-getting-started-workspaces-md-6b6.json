@@ -1,0 +1,28 @@
+{
+  "id": "getting-started/workspaces",
+  "title": "Workspace Layout",
+  "description": "Zeckna lives in a pnpm monorepo under packages/. Each package targets a distinct layer of the stack.",
+  "source": "@site/docs/getting-started/workspaces.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/workspaces",
+  "permalink": "/docs/getting-started/workspaces",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/getting-started/workspaces.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Workspace Layout",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Install the Toolchain",
+    "permalink": "/docs/getting-started/install"
+  },
+  "next": {
+    "title": "Configuration & Environment",
+    "permalink": "/docs/getting-started/configuration"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "intro",
+  "title": "Welcome to Zeckna",
+  "description": "Zeckna is a privacy-first wallet, SDK, and AI automation layer that blends Zcash shielded transactions with Solana-grade performance. The project ships as a pnpm monorepo with Rust, TypeScript, React Native, and AI services working together.",
+  "source": "@site/docs/intro.md",
+  "sourceDirName": ".",
+  "slug": "/intro",
+  "permalink": "/docs/intro",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/intro.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Welcome to Zeckna",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "next": {
+    "title": "Vision & Principles",
+    "permalink": "/docs/vision"
+  }
+}

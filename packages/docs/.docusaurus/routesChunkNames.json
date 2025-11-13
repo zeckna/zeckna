@@ -1,0 +1,98 @@
+{
+  "/docs-4d9": {
+    "__comp": "5e95c892",
+    "__context": {
+      "plugin": "aba21aa0"
+    }
+  },
+  "/docs-aa5": {
+    "__comp": "a7bd4aaa",
+    "__props": "0058b4c6"
+  },
+  "/docs-f4d": {
+    "__comp": "a94703ab"
+  },
+  "/docs/ai/overview-ddd": {
+    "__comp": "17896441",
+    "content": "bbb72079"
+  },
+  "/docs/ai/privacy-advisor-7c1": {
+    "__comp": "17896441",
+    "content": "995434b4"
+  },
+  "/docs/ai/transaction-pipelines-d0e": {
+    "__comp": "17896441",
+    "content": "dae86ec6"
+  },
+  "/docs/changelog-a62": {
+    "__comp": "17896441",
+    "content": "9beb87c2"
+  },
+  "/docs/getting-started/configuration-468": {
+    "__comp": "17896441",
+    "content": "009f1e98"
+  },
+  "/docs/getting-started/install-62f": {
+    "__comp": "17896441",
+    "content": "2a2a0c40"
+  },
+  "/docs/getting-started/workspaces-5b0": {
+    "__comp": "17896441",
+    "content": "6b673ae0"
+  },
+  "/docs/intro-61d": {
+    "__comp": "17896441",
+    "content": "0e384e19"
+  },
+  "/docs/reference/ai-963": {
+    "__comp": "17896441",
+    "content": "553f86d5"
+  },
+  "/docs/reference/core-eb9": {
+    "__comp": "17896441",
+    "content": "6459db85"
+  },
+  "/docs/reference/sdk-3cd": {
+    "__comp": "17896441",
+    "content": "ba5ad948"
+  },
+  "/docs/sdk/keys-0a1": {
+    "__comp": "17896441",
+    "content": "244cfa5c"
+  },
+  "/docs/sdk/quickstart-a98": {
+    "__comp": "17896441",
+    "content": "8b12235d"
+  },
+  "/docs/sdk/transactions-1d7": {
+    "__comp": "17896441",
+    "content": "43c412b4"
+  },
+  "/docs/sdk/view-keys-990": {
+    "__comp": "17896441",
+    "content": "c34d2a17"
+  },
+  "/docs/vision-2ef": {
+    "__comp": "17896441",
+    "content": "ae4554eb"
+  },
+  "/docs/wallet/architecture-ef1": {
+    "__comp": "17896441",
+    "content": "997e9f17"
+  },
+  "/docs/wallet/mobile-042": {
+    "__comp": "17896441",
+    "content": "1e52dbf2"
+  },
+  "/docs/wallet/storage-dc5": {
+    "__comp": "17896441",
+    "content": "7e0a60e2"
+  },
+  "/-e5f": {
+    "__comp": "1df93b7f",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "config": "5e9f5e1a"
+  }
+}

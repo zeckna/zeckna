@@ -1,0 +1,28 @@
+{
+  "id": "sdk/transactions",
+  "title": "Transaction APIs",
+  "description": "The SDK exposes helpers to craft shielded or transparent Zcash transactions. Shielded flows rely on the Rust core’s circuit integrations and return serialized transactions ready for broadcasting.",
+  "source": "@site/docs/sdk/transactions.md",
+  "sourceDirName": "sdk",
+  "slug": "/sdk/transactions",
+  "permalink": "/docs/sdk/transactions",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/sdk/transactions.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Transaction APIs",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Key Management",
+    "permalink": "/docs/sdk/keys"
+  },
+  "next": {
+    "title": "Viewing Keys",
+    "permalink": "/docs/sdk/view-keys"
+  }
+}

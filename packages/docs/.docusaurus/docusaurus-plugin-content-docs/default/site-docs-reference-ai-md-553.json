@@ -1,0 +1,28 @@
+{
+  "id": "reference/ai",
+  "title": "AI Reference",
+  "description": "The @zeckna/ai package exports modular functions for natural language processing, privacy scoring, and scheduling.",
+  "source": "@site/docs/reference/ai.md",
+  "sourceDirName": "reference",
+  "slug": "/reference/ai",
+  "permalink": "/docs/reference/ai",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/reference/ai.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "AI Reference",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "SDK Reference",
+    "permalink": "/docs/reference/sdk"
+  },
+  "next": {
+    "title": "Changelog",
+    "permalink": "/docs/changelog"
+  }
+}

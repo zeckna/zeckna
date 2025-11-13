@@ -1,0 +1,28 @@
+{
+  "id": "reference/sdk",
+  "title": "SDK Reference",
+  "description": "@zeckna/sdk is a TypeScript package that re-exports high-level functions from the WASM core.",
+  "source": "@site/docs/reference/sdk.md",
+  "sourceDirName": "reference",
+  "slug": "/reference/sdk",
+  "permalink": "/docs/reference/sdk",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/reference/sdk.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "SDK Reference",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Core (Rust) Reference",
+    "permalink": "/docs/reference/core"
+  },
+  "next": {
+    "title": "AI Reference",
+    "permalink": "/docs/reference/ai"
+  }
+}

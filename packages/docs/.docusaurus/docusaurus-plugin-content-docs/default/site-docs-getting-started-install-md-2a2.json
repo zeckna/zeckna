@@ -1,0 +1,28 @@
+{
+  "id": "getting-started/install",
+  "title": "Install the Toolchain",
+  "description": "Zeckna uses pnpm workspaces to manage Rust, TypeScript, and React Native projects. Install the prerequisites before cloning the repository.",
+  "source": "@site/docs/getting-started/install.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/install",
+  "permalink": "/docs/getting-started/install",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/getting-started/install.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Install the Toolchain",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Vision & Principles",
+    "permalink": "/docs/vision"
+  },
+  "next": {
+    "title": "Workspace Layout",
+    "permalink": "/docs/getting-started/workspaces"
+  }
+}

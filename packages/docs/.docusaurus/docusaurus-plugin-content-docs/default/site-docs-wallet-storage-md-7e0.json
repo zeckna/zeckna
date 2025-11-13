@@ -1,0 +1,28 @@
+{
+  "id": "wallet/storage",
+  "title": "Secure Storage",
+  "description": "Seed phrases and spending keys must stay encrypted. The mobile storage service provides a unified interface.",
+  "source": "@site/docs/wallet/storage.md",
+  "sourceDirName": "wallet",
+  "slug": "/wallet/storage",
+  "permalink": "/docs/wallet/storage",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/wallet/storage.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Secure Storage",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Wallet Architecture",
+    "permalink": "/docs/wallet/architecture"
+  },
+  "next": {
+    "title": "Mobile Build Targets",
+    "permalink": "/docs/wallet/mobile"
+  }
+}

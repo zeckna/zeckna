@@ -1,0 +1,28 @@
+{
+  "id": "sdk/quickstart",
+  "title": "SDK Quickstart",
+  "description": "The TypeScript SDK provides async wrappers around the Rust core’s WebAssembly bindings.",
+  "source": "@site/docs/sdk/quickstart.md",
+  "sourceDirName": "sdk",
+  "slug": "/sdk/quickstart",
+  "permalink": "/docs/sdk/quickstart",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/sdk/quickstart.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "SDK Quickstart",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Configuration & Environment",
+    "permalink": "/docs/getting-started/configuration"
+  },
+  "next": {
+    "title": "Key Management",
+    "permalink": "/docs/sdk/keys"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "intro",
+          "docs": [
+            {
+              "id": "ai/overview",
+              "path": "/docs/ai/overview",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "ai/privacy-advisor",
+              "path": "/docs/ai/privacy-advisor",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "ai/transaction-pipelines",
+              "path": "/docs/ai/transaction-pipelines",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "changelog",
+              "path": "/docs/changelog",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "getting-started/configuration",
+              "path": "/docs/getting-started/configuration",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "getting-started/install",
+              "path": "/docs/getting-started/install",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "getting-started/workspaces",
+              "path": "/docs/getting-started/workspaces",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "intro",
+              "path": "/docs/intro",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "reference/ai",
+              "path": "/docs/reference/ai",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "reference/core",
+              "path": "/docs/reference/core",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "reference/sdk",
+              "path": "/docs/reference/sdk",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sdk/keys",
+              "path": "/docs/sdk/keys",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sdk/quickstart",
+              "path": "/docs/sdk/quickstart",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sdk/transactions",
+              "path": "/docs/sdk/transactions",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "sdk/view-keys",
+              "path": "/docs/sdk/view-keys",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "vision",
+              "path": "/docs/vision",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wallet/architecture",
+              "path": "/docs/wallet/architecture",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wallet/mobile",
+              "path": "/docs/wallet/mobile",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "wallet/storage",
+              "path": "/docs/wallet/storage",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/intro",
+                "label": "intro"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

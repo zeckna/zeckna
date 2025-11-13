@@ -1,0 +1,28 @@
+{
+  "id": "vision",
+  "title": "Vision & Principles",
+  "description": "Zeckna aims to make private finance programmable. The roadmap is guided by three principles:",
+  "source": "@site/docs/vision.md",
+  "sourceDirName": ".",
+  "slug": "/vision",
+  "permalink": "/docs/vision",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/zeckna/zeckna/tree/main/packages/docs/docs/vision.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Vision & Principles",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Welcome to Zeckna",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "Install the Toolchain",
+    "permalink": "/docs/getting-started/install"
+  }
+}
