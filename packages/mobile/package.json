@@ -34,12 +34,6 @@
     "@react-native/eslint-config": "^0.73.1",
     "@react-native/metro-config": "^0.73.2",
     "@react-native/typescript-config": "^0.73.1",
-<<<<<<< HEAD
-    "@testing-library/jest-native": "^5.0.1",
-    "@testing-library/react-native": "^12.5.0",
-    "@types/jest": "^29.5.12",
-=======
->>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
     "@types/react": "^18.2.45",
     "@types/react-test-renderer": "^18.0.7",
     "babel-jest": "^29.7.0",
@@ -53,7 +47,4 @@
     "node": ">=18"
   }
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875

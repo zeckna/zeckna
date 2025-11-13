@@ -11,15 +11,8 @@ if ! command -v wasm-pack &> /dev/null; then
     curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 fi
 
-<<<<<<< HEAD
-# Build for Node.js target so tests can require the module
-wasm-pack build --target nodejs --out-dir pkg
-
-echo "Build complete! Output in pkg/ directory"
-=======
 # Build for web target
 wasm-pack build --target web --out-dir pkg
 
 echo "Build complete! Output in pkg/ directory"
 
->>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875

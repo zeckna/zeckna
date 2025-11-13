@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
@@ -21,27 +20,3 @@
   "exclude": ["node_modules", "android", "ios"]
 }
 
-=======
-{
-  "extends": "@react-native/typescript-config/tsconfig.json",
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "lib": ["ES2020"],
-    "jsx": "react-native",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*", "*.ts", "*.tsx"],
-  "exclude": ["node_modules", "android", "ios"]
-}
-
->>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
