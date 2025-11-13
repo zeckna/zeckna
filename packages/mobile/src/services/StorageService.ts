@@ -1,8 +1,17 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import * as Keychain from 'react-native-keychain';
+import {AddressType} from '@zeckna/sdk';
 
 const WALLET_INITIALIZED_KEY = 'wallet_initialized';
 const WALLET_ADDRESSES_KEY = 'wallet_addresses';
+
+export interface StoredAddress {
+  address: string;
+  addressType: AddressType;
+  account: number;
+  label?: string;
+  createdAt: string;
+}
 
 export class StorageService {
   /**
@@ -55,14 +64,14 @@ export class StorageService {
   /**
    * Store wallet addresses
    */
-  static async storeAddresses(addresses: any[]): Promise<void> {
+  static async storeAddresses(addresses: StoredAddress[]): Promise<void> {
     await EncryptedStorage.setItem(WALLET_ADDRESSES_KEY, JSON.stringify(addresses));
   }
 
   /**
    * Get stored wallet addresses
    */
-  static async getAddresses(): Promise<any[]> {
+  static async getAddresses(): Promise<StoredAddress[]> {
     try {
       const value = await EncryptedStorage.getItem(WALLET_ADDRESSES_KEY);
       return value ? JSON.parse(value) : [];
@@ -79,4 +88,3 @@ export class StorageService {
     await this.clearMnemonic();
   }
 }
-

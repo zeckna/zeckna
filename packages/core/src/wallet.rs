@@ -1,7 +1,6 @@
 use crate::address::{generate_shielded_address, generate_transparent_address, ZcashAddress};
 use crate::keys::{derive_seed_from_mnemonic, generate_seed_phrase};
-use crate::transaction::{build_shielded_transaction, build_transparent_transaction, Transaction};
-use serde::{Deserialize, Serialize};
+use crate::transaction::{build_shielded_transaction, Transaction};
 use std::collections::HashMap;
 use thiserror::Error;
 
@@ -17,7 +16,7 @@ pub enum WalletError {
     Transaction(#[from] crate::transaction::TransactionError),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct WalletState {
     pub mnemonic: String,
     pub seed: [u8; 64],

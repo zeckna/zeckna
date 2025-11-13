@@ -1,6 +1,5 @@
 use crate::address::{AddressType, ZcashAddress};
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -112,7 +111,7 @@ pub fn build_transparent_transaction(
 /// Sign a transaction with the spending key
 pub fn sign_transaction(
     transaction: &mut Transaction,
-    spending_key: &[u8; 32],
+    _spending_key: &[u8; 32],
 ) -> Result<(), TransactionError> {
     // In production, this would use zcash_primitives to sign the transaction
     // For now, we'll just mark it as signed by updating the ID

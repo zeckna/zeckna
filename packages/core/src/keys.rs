@@ -1,6 +1,6 @@
-use bip39::{Language, Mnemonic, MnemonicType};
+use bip39::{Language, Mnemonic};
+use rand::{rngs::OsRng, RngCore};
 use sha2::{Digest, Sha256};
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -15,24 +15,26 @@ pub enum KeyError {
 
 /// Generate a new BIP39 mnemonic seed phrase
 pub fn generate_seed_phrase() -> String {
-    let mnemonic = Mnemonic::new(MnemonicType::Words24, Language::English);
-    mnemonic.phrase().to_string()
+    let mut entropy = [0u8; 32];
+    OsRng.fill_bytes(&mut entropy);
+    let mnemonic = Mnemonic::from_entropy_in(Language::English, &entropy)
+        .expect("entropy length should be valid for mnemonic");
+    mnemonic.to_string()
 }
 
 /// Validate a mnemonic seed phrase
 pub fn validate_seed_phrase(phrase: &str) -> Result<(), KeyError> {
-    Mnemonic::from_str(phrase)
-        .map_err(|_| KeyError::InvalidMnemonic)?;
-    Ok(())
+    Mnemonic::parse_in(Language::English, phrase)
+        .map(|_| ())
+        .map_err(|_| KeyError::InvalidMnemonic)
 }
 
 /// Derive seed bytes from mnemonic phrase
 pub fn derive_seed_from_mnemonic(phrase: &str, passphrase: Option<&str>) -> Result<[u8; 64], KeyError> {
-    let mnemonic = Mnemonic::from_str(phrase)
+    let mnemonic = Mnemonic::parse_in(Language::English, phrase)
         .map_err(|_| KeyError::InvalidMnemonic)?;
-    
-    let seed = mnemonic.to_seed(passphrase.unwrap_or(""));
-    Ok(seed)
+
+    Ok(mnemonic.to_seed(passphrase.unwrap_or("")))
 }
 
 /// Derive spending key for Zcash shielded addresses (z-addr)
@@ -42,7 +44,7 @@ pub fn derive_zcash_spending_key(seed: &[u8; 64], account: u32) -> Result<[u8; 3
     hasher.update(b"Zcash shielded spending key");
     hasher.update(seed);
     hasher.update(&account.to_le_bytes());
-    
+
     let hash = hasher.finalize();
     let mut key = [0u8; 32];
     key.copy_from_slice(&hash[..32]);
@@ -56,7 +58,7 @@ pub fn derive_zcash_transparent_key(seed: &[u8; 64], account: u32) -> Result<[u8
     hasher.update(b"Zcash transparent key");
     hasher.update(seed);
     hasher.update(&account.to_le_bytes());
-    
+
     let hash = hasher.finalize();
     let mut key = [0u8; 32];
     key.copy_from_slice(&hash[..32]);

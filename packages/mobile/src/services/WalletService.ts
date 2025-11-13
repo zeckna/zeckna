@@ -1,11 +1,31 @@
-import {Wallet} from '@zeckna/sdk';
-import {StorageService} from './StorageService';
+import {Wallet, AddressType} from '@zeckna/sdk';
+import {StorageService, StoredAddress} from './StorageService';
 
 export class WalletService {
   private wallet: Wallet;
 
   constructor() {
     this.wallet = new Wallet();
+  }
+
+  private toStoredAddress(address: {
+    address: string;
+    addressType: AddressType;
+    account: number;
+  }, label?: string): StoredAddress {
+    return {
+      address: address.address,
+      addressType: address.addressType,
+      account: address.account,
+      label,
+      createdAt: new Date().toISOString(),
+    };
+  }
+
+  private async persistAddress(address: StoredAddress): Promise<void> {
+    const existing = await StorageService.getAddresses();
+    const updated = [address, ...existing.filter(item => item.address !== address.address)];
+    await StorageService.storeAddresses(updated);
   }
 
   /**
@@ -15,6 +35,10 @@ export class WalletService {
     const mnemonic = await this.wallet.initializeNew();
     await StorageService.storeMnemonic(mnemonic);
     await StorageService.setWalletInitialized(true);
+
+    const primaryShielded = await this.wallet.generateNewShieldedAddress();
+    await this.persistAddress(this.toStoredAddress(primaryShielded, 'Primary Shielded'));
+
     return mnemonic;
   }
 
@@ -25,6 +49,12 @@ export class WalletService {
     await this.wallet.initializeFromMnemonic(mnemonic);
     await StorageService.storeMnemonic(mnemonic);
     await StorageService.setWalletInitialized(true);
+
+    const storedAddresses = await StorageService.getAddresses();
+    if (storedAddresses.length === 0) {
+      const shielded = await this.wallet.generateNewShieldedAddress();
+      await this.persistAddress(this.toStoredAddress(shielded, 'Primary Shielded'));
+    }
   }
 
   /**
@@ -38,6 +68,13 @@ export class WalletService {
 
     try {
       await this.wallet.initializeFromMnemonic(mnemonic);
+
+      const storedAddresses = await StorageService.getAddresses();
+      if (storedAddresses.length === 0) {
+        const shielded = await this.wallet.generateNewShieldedAddress();
+        await this.persistAddress(this.toStoredAddress(shielded, 'Primary Shielded'));
+      }
+
       return true;
     } catch {
       return false;
@@ -52,10 +89,14 @@ export class WalletService {
   }
 
   /**
-   * Get balance for an address
+   * Get balance for an address (defaults to primary shielded)
    */
-  async getBalance(address: string): Promise<number> {
-    return this.wallet.getBalance(address);
+  async getBalance(address?: string): Promise<number> {
+    const target = address ?? (await this.getPrimaryAddress())?.address;
+    if (!target) {
+      return 0;
+    }
+    return this.wallet.getBalance(target);
   }
 
   /**
@@ -70,13 +111,24 @@ export class WalletService {
   }
 
   /**
-   * Generate a new shielded address
+   * Generate and persist a new shielded address
    */
-  async generateNewShieldedAddress() {
-    return this.wallet.generateNewShieldedAddress();
+  async generateNewShieldedAddress(label?: string): Promise<StoredAddress> {
+    const addr = await this.wallet.generateNewShieldedAddress();
+    const stored = this.toStoredAddress(addr, label);
+    await this.persistAddress(stored);
+    return stored;
+  }
+
+  async getAddresses(): Promise<StoredAddress[]> {
+    return StorageService.getAddresses();
+  }
+
+  async getPrimaryAddress(): Promise<StoredAddress | undefined> {
+    const stored = await this.getAddresses();
+    return stored[0];
   }
 }
 
 // Singleton instance
 export const walletService = new WalletService();
-

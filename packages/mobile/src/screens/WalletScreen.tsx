@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -15,14 +15,12 @@ import TransactionItem from '../components/TransactionItem';
 
 export default function WalletScreen() {
   const navigation = useNavigation();
-  const {balance, addresses, refreshBalance, isLoading} = useWallet();
+  const {balance, addresses, primaryAddress, refreshBalance, isLoading, generateNewShieldedAddress} = useWallet();
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    if (addresses.length > 0) {
-      await refreshBalance(addresses[0].address);
-    }
+    await refreshBalance(primaryAddress?.address);
     setRefreshing(false);
   };
 
@@ -57,14 +55,33 @@ export default function WalletScreen() {
       <View style={styles.addressesContainer}>
         <Text style={styles.sectionTitle}>Addresses</Text>
         {addresses.length === 0 ? (
-          <Text style={styles.emptyText}>No addresses yet</Text>
+          <>
+            <Text style={styles.emptyText}>No addresses yet</Text>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.generateAddressButton]}
+              onPress={generateNewShieldedAddress}>
+              <Text style={styles.actionButtonText}>Generate Shielded Address</Text>
+            </TouchableOpacity>
+          </>
         ) : (
-          addresses.map((addr, index) => (
-            <View key={index} style={styles.addressItem}>
-              <Text style={styles.addressText}>{addr.address}</Text>
-              <PrivacyBadge isShielded={addr.addressType === 'shielded'} />
-            </View>
-          ))
+          <>
+            {addresses.map((addr, index) => (
+              <View key={addr.address} style={styles.addressItem}>
+                <View style={styles.addressMeta}>
+                  <Text style={styles.addressLabel}>
+                    {addr.label ?? `Address ${index + 1}`}
+                  </Text>
+                  <Text style={styles.addressText}>{addr.address}</Text>
+                </View>
+                <PrivacyBadge isShielded={addr.addressType === 'shielded'} />
+              </View>
+            ))}
+            <TouchableOpacity
+              style={[styles.actionButton, styles.generateAddressButton]}
+              onPress={generateNewShieldedAddress}>
+              <Text style={styles.actionButtonText}>Generate New Shielded Address</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
 
@@ -128,6 +145,16 @@ const styles = StyleSheet.create({
   addressesContainer: {
     padding: 20,
   },
+  addressMeta: {
+    flex: 1,
+    marginRight: 12,
+  },
+  addressLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 4,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -144,7 +171,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   addressText: {
-    flex: 1,
     fontSize: 12,
     color: '#333',
     fontFamily: 'monospace',
@@ -167,6 +193,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  generateAddressButton: {
+    marginTop: 10,
+    backgroundColor: '#34495e',
   },
 });
 

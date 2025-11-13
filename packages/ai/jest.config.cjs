@@ -1,13 +1,14 @@
-module.exports = {
+const config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1'
-  },
-  roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.test.ts?(x)'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: true, tsconfig: { types: ['jest', 'node'] } }]
-  }
+    '^.+\\.(t|j)sx?$': ['ts-jest', { isolatedModules: true }]
+  },
+  testPathIgnorePatterns: ['/dist/', '/node_modules/'],
+  roots: ['<rootDir>/src'],
+  setupFilesAfterEnv: []
 };
+
+module.exports = config;

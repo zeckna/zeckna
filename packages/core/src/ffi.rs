@@ -1,9 +1,8 @@
 use wasm_bindgen::prelude::*;
-use crate::keys::{generate_seed_phrase, validate_seed_phrase, derive_seed_from_mnemonic};
-use crate::address::{generate_shielded_address, generate_transparent_address, validate_address, AddressType, ZcashAddress};
-use crate::wallet::{Wallet, WalletError};
-use crate::view_key::{export_view_key, import_view_key, ViewKey};
-use crate::transaction::{build_shielded_transaction, build_transparent_transaction, Transaction};
+use crate::keys::{generate_seed_phrase, validate_seed_phrase};
+use crate::address::{generate_shielded_address, generate_transparent_address, validate_address, AddressType};
+use crate::wallet::Wallet;
+use crate::view_key::export_view_key;
 
 #[wasm_bindgen]
 extern "C" {

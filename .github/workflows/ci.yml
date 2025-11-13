@@ -1,0 +1,57 @@
+name: Zeckna CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Install, Test, and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run core tests
+        run: pnpm --filter @zeckna/core test
+
+      - name: Run SDK tests
+        run: pnpm --filter @zeckna/sdk test
+
+      - name: Run AI tests
+        run: pnpm --filter @zeckna/ai test
+
+      - name: Lint documentation
+        run: pnpm --filter @zeckna/docs lint
+
+      - name: Build web app
+        run: pnpm --filter @zeckna/web build
+
+      - name: Build docs
+        run: pnpm --filter @zeckna/docs build
+

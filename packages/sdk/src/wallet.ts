@@ -1,5 +1,5 @@
 import { ZecknaWallet, initWasm, ensureWasmInitialized } from './wasm-loader';
-import { generateShieldedAddress, generateTransparentAddress, ZcashAddress } from './address';
+import { generateShieldedAddress, generateTransparentAddress, ZcashAddress, AddressType } from './address';
 import { createShieldedTransaction, Transaction } from './transaction';
 
 export interface WalletState {
@@ -43,7 +43,7 @@ export class Wallet {
     const addr = this.wasmWallet.generate_new_shielded_address();
     return {
       address: addr.address,
-      addressType: addr.address_type === 'Shielded' ? 'shielded' : 'transparent',
+      addressType: AddressType.Shielded,
       account: addr.account,
     };
   }

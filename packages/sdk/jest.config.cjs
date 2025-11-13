@@ -1,26 +1,14 @@
-const path = require('path');
-
-module.exports = {
+const config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true,
-      tsconfig: {
-        module: 'esnext',
-        target: 'es2020',
-        types: ['jest', 'node']
-      }
-    }],
-    '^.+\\.(js|jsx)$': ['babel-jest', {
-      configFile: path.join(__dirname, 'babel.config.cjs')
-    }]
+    '^.+\\.(t|j)sx?$': ['ts-jest', { isolatedModules: true }]
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!@zeckna/core)'
-  ],
-  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
+  testPathIgnorePatterns: ['/dist/', '/node_modules/'],
+  roots: ['<rootDir>/src'],
+  setupFilesAfterEnv: []
 };
+
+module.exports = config;

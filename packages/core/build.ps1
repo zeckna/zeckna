@@ -16,8 +16,8 @@ if (-not $wasmPackInstalled) {
     }
 }
 
-# Build for web target
-wasm-pack build --target web --out-dir pkg
+# Build for Node.js target (compatible with Jest / server usage)
+wasm-pack build --target nodejs --out-dir pkg
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Build complete! Output in pkg/ directory" -ForegroundColor Green

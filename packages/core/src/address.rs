@@ -1,6 +1,5 @@
 use crate::keys::{derive_zcash_spending_key, derive_zcash_transparent_key, KeyError};
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
