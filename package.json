@@ -18,7 +18,10 @@
     "lint": "pnpm -r lint"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "ts-node": "^10.9.2",
+=======
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
     "typescript": "^5.3.3"
   },
   "engines": {
@@ -26,3 +29,7 @@
     "pnpm": ">=8.0.0"
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875

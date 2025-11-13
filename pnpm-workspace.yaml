@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 packages:
   - 'packages/*'
 
+=======
+packages:
+  - 'packages/*'
+
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875

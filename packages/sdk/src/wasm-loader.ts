@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const coreModulePromise = import('@zeckna/core/pkg/zeckna_core.js');
 
 let wasmInitialized = false;
@@ -19,19 +20,52 @@ function ensureModule() {
   return coreModule;
 }
 
+=======
+import init, {
+  ZecknaWallet,
+  wasm_generate_seed_phrase,
+  wasm_validate_seed_phrase,
+  wasm_generate_shielded_address,
+  wasm_generate_transparent_address,
+  wasm_validate_address,
+  wasm_export_view_key,
+} from '@zeckna/core';
+
+let wasmInitialized = false;
+
+/**
+ * Initialize the WASM module
+ * Must be called before using any SDK functions
+ */
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
 export async function initWasm(): Promise<void> {
   if (wasmInitialized) {
     return;
   }
 
+<<<<<<< HEAD
   coreModule = await importCoreModule();
   wasmInitialized = true;
 }
 
+=======
+  try {
+    await init();
+    wasmInitialized = true;
+  } catch (error) {
+    throw new Error(`Failed to initialize WASM module: ${error}`);
+  }
+}
+
+/**
+ * Check if WASM module is initialized
+ */
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
 export function isWasmInitialized(): boolean {
   return wasmInitialized;
 }
 
+<<<<<<< HEAD
 export function ensureWasmInitialized(): void {
   ensureModule();
 }
@@ -94,3 +128,25 @@ export function wasm_export_view_key(mnemonic: string, account: number): any {
   const module = ensureModule();
   return module.wasm_export_view_key(mnemonic, account);
 }
+=======
+/**
+ * Ensure WASM is initialized, throw if not
+ */
+export function ensureWasmInitialized(): void {
+  if (!wasmInitialized) {
+    throw new Error('WASM module not initialized. Call initWasm() first.');
+  }
+}
+
+// Re-export WASM functions
+export {
+  ZecknaWallet,
+  wasm_generate_seed_phrase,
+  wasm_validate_seed_phrase,
+  wasm_generate_shielded_address,
+  wasm_generate_transparent_address,
+  wasm_validate_address,
+  wasm_export_view_key,
+};
+
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875

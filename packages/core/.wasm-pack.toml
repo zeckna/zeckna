@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [package]
 name = "zeckna-core"
 version = "0.1.0"
@@ -9,3 +10,16 @@ repository = "https://github.com/zeckna/zeckna"
 [build]
 target = "web"
 
+=======
+[package]
+name = "zeckna-core"
+version = "0.1.0"
+authors = ["Zeckna Team"]
+description = "Zeckna Core - Rust library for Zcash operations"
+license = "MIT"
+repository = "https://github.com/zeckna/zeckna"
+
+[build]
+target = "web"
+
+>>>>>>> 384333b4dbf53ee63ee07036a6e4426406fe2875
