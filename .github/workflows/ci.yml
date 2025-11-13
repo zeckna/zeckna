@@ -28,6 +28,9 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      - name: Enable pnpm via Corepack
+        run: corepack enable pnpm
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -54,4 +57,3 @@ jobs:
 
       - name: Build docs
         run: pnpm --filter @zeckna/docs build
-
