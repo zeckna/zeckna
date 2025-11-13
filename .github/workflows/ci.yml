@@ -30,7 +30,7 @@ jobs:
       - name: Enable pnpm via Corepack
         run: |
           corepack enable
-          corepack prepare pnpm@8 --activate
+          corepack prepare pnpm@10.22.0 --activate
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -52,5 +52,6 @@ jobs:
 
       - name: Build docs
         run: pnpm --filter @zeckna/docs build
+
 
 
