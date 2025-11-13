@@ -1,0 +1,28 @@
+{
+  "name": "zeckna",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-chain privacy-first wallet with Zcash shielded transactions and Solana integration",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:core": "pnpm --filter @zeckna/core build",
+    "build:sdk": "pnpm --filter @zeckna/sdk build",
+    "build:mobile": "pnpm --filter @zeckna/mobile build",
+    "build:ai": "pnpm --filter @zeckna/ai build",
+    "dev": "pnpm -r dev",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

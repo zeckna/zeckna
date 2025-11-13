@@ -1,0 +1,11 @@
+[package]
+name = "zeckna-core"
+version = "0.1.0"
+authors = ["Zeckna Team"]
+description = "Zeckna Core - Rust library for Zcash operations"
+license = "MIT"
+repository = "https://github.com/zeckna/zeckna"
+
+[build]
+target = "web"
+
