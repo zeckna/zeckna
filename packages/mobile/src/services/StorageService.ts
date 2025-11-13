@@ -4,6 +4,8 @@ import {AddressType} from '@zeckna/sdk';
 
 const WALLET_INITIALIZED_KEY = 'wallet_initialized';
 const WALLET_ADDRESSES_KEY = 'wallet_addresses';
+const VIEWING_KEY_KEY = 'wallet_viewing_key';
+const LAST_SYNC_HEIGHT_KEY = 'wallet_last_sync_height';
 
 export interface StoredAddress {
   address: string;
@@ -59,6 +61,31 @@ export class StorageService {
    */
   static async clearMnemonic(): Promise<void> {
     await Keychain.resetGenericPassword();
+  }
+
+  static async storeViewingKey(viewingKey: string): Promise<void> {
+    await EncryptedStorage.setItem(VIEWING_KEY_KEY, viewingKey);
+  }
+
+  static async getViewingKey(): Promise<string | null> {
+    try {
+      return await EncryptedStorage.getItem(VIEWING_KEY_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  static async storeLastSyncHeight(height: number): Promise<void> {
+    await EncryptedStorage.setItem(LAST_SYNC_HEIGHT_KEY, JSON.stringify(height));
+  }
+
+  static async getLastSyncHeight(): Promise<number | null> {
+    try {
+      const value = await EncryptedStorage.getItem(LAST_SYNC_HEIGHT_KEY);
+      return value ? JSON.parse(value) : null;
+    } catch {
+      return null;
+    }
   }
 
   /**

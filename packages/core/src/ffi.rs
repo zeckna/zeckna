@@ -71,6 +71,12 @@ impl ZecknaWallet {
         self.inner.get_balance(address).map_err(to_js_error)
     }
 
+    /// Export viewing key
+    #[wasm_bindgen]
+    pub fn export_full_viewing_key(&self, account: u32) -> Result<String, JsValue> {
+        self.inner.export_full_viewing_key(account).map_err(to_js_error)
+    }
+
     /// Create a shielded transaction
     #[wasm_bindgen]
     pub fn create_shielded_transaction(

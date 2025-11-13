@@ -14,8 +14,12 @@ export function useWallet() {
     setAddresses(stored);
     setPrimaryAddress(stored[0] ?? null);
     if (stored[0]) {
-      const bal = await walletService.getBalance(stored[0].address);
-      setBalance(bal);
+      try {
+        const bal = await walletService.syncShieldedBalance();
+        setBalance(bal);
+      } catch (error) {
+        console.error('Error syncing balance:', error);
+      }
     }
   }, []);
 
@@ -60,14 +64,14 @@ export function useWallet() {
     }
   }, [loadAddresses]);
 
-  const refreshBalance = useCallback(async (address?: string) => {
+  const refreshBalance = useCallback(async () => {
     try {
-      const bal = await walletService.getBalance(address ?? primaryAddress?.address);
+      const bal = await walletService.syncShieldedBalance();
       setBalance(bal);
     } catch (error) {
       console.error('Error refreshing balance:', error);
     }
-  }, [primaryAddress]);
+  }, []);
 
   const generateNewShieldedAddress = useCallback(async () => {
     const addr = await walletService.generateNewShieldedAddress();

@@ -1,11 +1,14 @@
-import {Wallet, AddressType} from '@zeckna/sdk';
+import {Wallet, AddressType, SyncServiceClient} from '@zeckna/sdk';
 import {StorageService, StoredAddress} from './StorageService';
+import {SYNC_SERVICE_URL} from '../config';
 
 export class WalletService {
   private wallet: Wallet;
+  private syncClient: SyncServiceClient;
 
   constructor() {
     this.wallet = new Wallet();
+    this.syncClient = new SyncServiceClient(SYNC_SERVICE_URL);
   }
 
   private toStoredAddress(address: {
@@ -39,6 +42,9 @@ export class WalletService {
     const primaryShielded = await this.wallet.generateNewShieldedAddress();
     await this.persistAddress(this.toStoredAddress(primaryShielded, 'Primary Shielded'));
 
+    const fvk = await this.wallet.exportFullViewingKey(0);
+    await StorageService.storeViewingKey(fvk);
+
     return mnemonic;
   }
 
@@ -55,6 +61,9 @@ export class WalletService {
       const shielded = await this.wallet.generateNewShieldedAddress();
       await this.persistAddress(this.toStoredAddress(shielded, 'Primary Shielded'));
     }
+
+    const fvk = await this.wallet.exportFullViewingKey(0);
+    await StorageService.storeViewingKey(fvk);
   }
 
   /**
@@ -74,6 +83,9 @@ export class WalletService {
         const shielded = await this.wallet.generateNewShieldedAddress();
         await this.persistAddress(this.toStoredAddress(shielded, 'Primary Shielded'));
       }
+
+      const fvk = await this.wallet.exportFullViewingKey(0);
+      await StorageService.storeViewingKey(fvk);
 
       return true;
     } catch {
@@ -97,6 +109,21 @@ export class WalletService {
       return 0;
     }
     return this.wallet.getBalance(target);
+  }
+
+  async syncShieldedBalance(): Promise<number> {
+    const viewingKey = await StorageService.getViewingKey();
+    const primary = await this.getPrimaryAddress();
+
+    if (!viewingKey || !primary) {
+      throw new Error('Wallet not initialized for sync');
+    }
+
+    const result = await this.syncClient.getShieldedBalance(primary.address, viewingKey);
+    if (result.latestHeight) {
+      await StorageService.storeLastSyncHeight(result.latestHeight);
+    }
+    return result.balance.valueZat;
   }
 
   /**

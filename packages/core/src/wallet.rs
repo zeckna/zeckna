@@ -1,6 +1,7 @@
 use crate::address::{generate_shielded_address, generate_transparent_address, ZcashAddress};
 use crate::keys::{derive_seed_from_mnemonic, generate_seed_phrase};
 use crate::transaction::{build_shielded_transaction, Transaction};
+use crate::view_key::export_view_key;
 use std::collections::HashMap;
 use thiserror::Error;
 
@@ -111,6 +112,13 @@ impl Wallet {
     pub fn get_balance(&self, address: &str) -> Result<u64, WalletError> {
         let state = self.get_state()?;
         Ok(*state.balances.get(address).unwrap_or(&0))
+    }
+
+    /// Export the full viewing key for the given account
+    pub fn export_full_viewing_key(&self, account: u32) -> Result<String, WalletError> {
+        let state = self.get_state()?;
+        let view_key = export_view_key(&state.mnemonic, account).map_err(|_| WalletError::InvalidMnemonic)?;
+        Ok(view_key.view_key)
     }
 
     /// Create a shielded transaction

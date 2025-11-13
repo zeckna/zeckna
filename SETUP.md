@@ -15,7 +15,12 @@
 
 3. **Build the project**
    ```bash
-   pnpm build
+   pnpm --filter @zeckna/core run build:unix   # Rust → WASM
+   pnpm --filter @zeckna/sdk build
+   pnpm --filter @zeckna/ai build
+   pnpm --filter @zeckna/docs build
+   pnpm --filter @zeckna/web build
+   pnpm --filter @zeckna/sync-service build
    ```
 
 ## Building Rust Core
@@ -31,7 +36,7 @@ The Rust core library needs to be compiled to WASM before the SDK can be used.
 
 ```bash
 cd packages/core
-pnpm build
+pnpm run build:unix
 ```
 
 This will:
@@ -75,6 +80,8 @@ Create `.env` files as needed:
 
 - `packages/mobile/.env` - Mobile app configuration
 - `packages/ai/.env` - AI service API keys (optional)
+- `packages/sync-service/.env` - lightwalletd endpoint overrides (`PORT`, `LIGHTWALLETD_ENDPOINT`, `LIGHTWALLETD_TLS_DOMAIN`)
+- Root `.env` - set `ZECKNA_SYNC_URL` for SDK/mobile if the sync service runs remotely
 
 ## Troubleshooting
 
@@ -95,4 +102,9 @@ Create `.env` files as needed:
 - Ensure pnpm is installed: `pnpm --version`
 - Clear pnpm store: `pnpm store prune`
 - Reinstall: `rm -rf node_modules && pnpm install`
+
+### Sync Service
+
+- Verify the service can reach the lightwalletd endpoint: `openssl s_client -connect mainnet.lightwalletd.com:9067`
+- Use the health endpoint: `curl http://localhost:4000/health`
 

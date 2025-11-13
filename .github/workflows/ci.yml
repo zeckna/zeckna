@@ -50,5 +50,6 @@ jobs:
       - name: Build docs
         run: pnpm --filter @zeckna/docs build
 
-
+      - name: Build sync service
+        run: pnpm --filter @zeckna/sync-service build
 

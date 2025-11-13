@@ -1,4 +1,4 @@
-import {ParsedCommand} from './parser';
+import {ParsedCommand, parseCommand} from './parser';
 import {TransactionIntent, buildTransactionFromCommand} from './transaction-builder';
 import {Wallet} from '@zeckna/sdk';
 

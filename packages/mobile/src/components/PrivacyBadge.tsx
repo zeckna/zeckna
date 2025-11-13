@@ -9,7 +9,7 @@ export default function PrivacyBadge({isShielded}: PrivacyBadgeProps) {
   return (
     <View style={[styles.badge, isShielded ? styles.shielded : styles.transparent]}>
       <Text style={styles.badgeText}>
-        {isShielded ? '🛡️ Shielded' : '👁️ Transparent'}
+        {isShielded ? 'Shielded' : 'Transparent'}
       </Text>
     </View>
   );
@@ -23,15 +23,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   shielded: {
-    backgroundColor: '#d4edda',
+    backgroundColor: '#113b45',
   },
   transparent: {
-    backgroundColor: '#fff3cd',
+    backgroundColor: '#e9edf2',
   },
   badgeText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#155724',
+    color: '#fff',
   },
 });
 

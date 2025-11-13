@@ -35,6 +35,16 @@ export class Wallet {
   }
 
   /**
+   * Export the full viewing key for an account (default 0)
+   */
+  async exportFullViewingKey(account: number = 0): Promise<string> {
+    await initWasm();
+    ensureWasmInitialized();
+    const key = this.wasmWallet.export_full_viewing_key(account);
+    return key;
+  }
+
+  /**
    * Generate a new shielded address
    */
   async generateNewShieldedAddress(): Promise<ZcashAddress> {
@@ -62,10 +72,11 @@ export class Wallet {
    */
   async createShieldedTransaction(
     toAddress: string,
-    amount: number,
+    amount: number | bigint,
     memo?: string
   ): Promise<Transaction> {
-    return createShieldedTransaction(this.wasmWallet, toAddress, amount, memo);
+    const value = typeof amount === 'bigint' ? Number(amount) : amount;
+    return createShieldedTransaction(this.wasmWallet, toAddress, value, memo);
   }
 
   /**

@@ -70,6 +70,10 @@ export class ZecknaWallet {
   create_shielded_transaction(to: string, amount: number, memo?: number[]): any {
     return this.inner.create_shielded_transaction(to, amount, memo);
   }
+
+  export_full_viewing_key(account: number): string {
+    return this.inner.export_full_viewing_key(account);
+  }
 }
 
 export function wasm_generate_seed_phrase(): string {

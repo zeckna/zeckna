@@ -11,16 +11,15 @@ import {useNavigation} from '@react-navigation/native';
 import {useWallet} from '../hooks/useWallet';
 import {zatoshisToZEC} from '@zeckna/sdk';
 import PrivacyBadge from '../components/PrivacyBadge';
-import TransactionItem from '../components/TransactionItem';
 
 export default function WalletScreen() {
   const navigation = useNavigation();
-  const {balance, addresses, primaryAddress, refreshBalance, isLoading, generateNewShieldedAddress} = useWallet();
+  const {balance, addresses, primaryAddress, refreshBalance, generateNewShieldedAddress} = useWallet();
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await refreshBalance(primaryAddress?.address);
+    await refreshBalance();
     setRefreshing(false);
   };
 
