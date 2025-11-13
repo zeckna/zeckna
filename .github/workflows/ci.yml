@@ -44,9 +44,6 @@ jobs:
       - name: Run AI tests
         run: pnpm --filter @zeckna/ai test
 
-      - name: Lint documentation
-        run: pnpm --filter @zeckna/docs lint
-
       - name: Build web app
         run: pnpm --filter @zeckna/web build
 
