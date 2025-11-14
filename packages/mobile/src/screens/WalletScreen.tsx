@@ -14,7 +14,15 @@ import PrivacyBadge from '../components/PrivacyBadge';
 
 export default function WalletScreen() {
   const navigation = useNavigation();
-  const {balance, addresses, primaryAddress, refreshBalance, generateNewShieldedAddress} = useWallet();
+  const {
+    balance,
+    addresses,
+    refreshBalance,
+    generateNewShieldedAddress,
+    syncState,
+    syncError,
+    hasSyncIssue,
+  } = useWallet();
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -35,6 +43,20 @@ export default function WalletScreen() {
         <Text style={styles.balanceLabel}>Total Balance</Text>
         <Text style={styles.balanceAmount}>{zecBalance.toFixed(8)} ZEC</Text>
         <PrivacyBadge isShielded={true} />
+        <View style={styles.syncContainer}>
+          <Text style={styles.syncLabel}>
+            {syncState.status === 'syncing'
+              ? 'Syncing with Zcash network...'
+              : `Last synced: ${new Date(syncState.updatedAt).toLocaleString()}`}
+          </Text>
+          {hasSyncIssue ? (
+            <Text style={styles.syncErrorText}>{syncError ?? 'Sync issue detected'}</Text>
+          ) : (
+            <Text style={styles.syncSuccessText}>
+              Latest block: {syncState.latestHeight}
+            </Text>
+          )}
+        </View>
       </View>
 
       <View style={styles.actionsContainer}>
@@ -118,6 +140,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
+  },
+  syncContainer: {
+    marginTop: 12,
+    alignItems: 'center',
+  },
+  syncLabel: {
+    fontSize: 12,
+    color: '#666',
+  },
+  syncSuccessText: {
+    fontSize: 12,
+    color: '#2ecc71',
+    marginTop: 4,
+  },
+  syncErrorText: {
+    fontSize: 12,
+    color: '#e74c3c',
+    marginTop: 4,
   },
   actionsContainer: {
     flexDirection: 'row',

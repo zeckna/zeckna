@@ -46,5 +46,39 @@ describe('SyncServiceClient', () => {
     const summary = await client.getBlockSummaries(100, 101);
     expect(summary.blocks.length).toBe(1);
   });
+
+  it('fetches incremental blocks since a height', async () => {
+    nock(BASE_URL)
+      .post('/v1/lightwalletd/blocks/since', { sinceHeight: 150, limit: 25 })
+      .reply(200, {
+        startHeight: 151,
+        endHeight: 175,
+        latestHeight: 300,
+        limit: 25,
+        blocks: [
+          { height: 151, hash: 'hash151', transactions: 2 },
+          { height: 152, hash: 'hash152', transactions: 0 }
+        ]
+      });
+
+    const result = await client.getBlocksSince(150, 25);
+    expect(result.startHeight).toBe(151);
+    expect(result.endHeight).toBe(175);
+    expect(result.latestHeight).toBe(300);
+    expect(result.blocks).toHaveLength(2);
+  });
+
+  it('passes through limit when omitted', async () => {
+    nock(BASE_URL)
+      .post('/v1/lightwalletd/blocks/since', { sinceHeight: 0 })
+      .reply(200, { startHeight: 1, endHeight: 0, latestHeight: 0, limit: 100, blocks: [] });
+
+    const result = await client.getBlocksSince(0);
+    expect(result.blocks).toHaveLength(0);
+  });
+
+  it('validates sinceHeight input', async () => {
+    await expect(client.getBlocksSince(-1)).rejects.toThrow('sinceHeight must be a non-negative number');
+  });
 });
 

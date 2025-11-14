@@ -1,6 +1,7 @@
 import { ZecknaWallet, initWasm, ensureWasmInitialized } from './wasm-loader';
-import { generateShieldedAddress, generateTransparentAddress, ZcashAddress, AddressType } from './address';
+import { ZcashAddress, AddressType } from './address';
 import { createShieldedTransaction, Transaction } from './transaction';
+import { SyncServiceClient, BlocksSinceResponse, ShieldedBalanceResponse } from './sync';
 
 export interface WalletState {
   mnemonic: string;
@@ -11,9 +12,11 @@ export interface WalletState {
 
 export class Wallet {
   private wasmWallet: ZecknaWallet;
+  private syncClient: SyncServiceClient;
 
   constructor() {
     this.wasmWallet = new ZecknaWallet();
+    this.syncClient = new SyncServiceClient();
   }
 
   /**
@@ -77,6 +80,27 @@ export class Wallet {
   ): Promise<Transaction> {
     const value = typeof amount === 'bigint' ? Number(amount) : amount;
     return createShieldedTransaction(this.wasmWallet, toAddress, value, memo);
+  }
+
+  /**
+   * Configure sync service endpoint (for testing / environment overrides)
+   */
+  setSyncServiceUrl(url: string) {
+    this.syncClient = new SyncServiceClient(url);
+  }
+
+  /**
+   * Fetch shielded balance via sync service using the provided viewing key.
+   */
+  async fetchShieldedBalance(address: string, viewingKey: string): Promise<ShieldedBalanceResponse> {
+    return this.syncClient.getShieldedBalance(address, viewingKey);
+  }
+
+  /**
+   * Fetch incremental blocks since a given height.
+   */
+  async fetchBlocksSince(sinceHeight: number, limit?: number): Promise<BlocksSinceResponse> {
+    return this.syncClient.getBlocksSince(sinceHeight, limit);
   }
 
   /**

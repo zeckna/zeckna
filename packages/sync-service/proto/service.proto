@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cash.z.wallet.sdk.rpc;
 
-import "proto/compact_formats.proto";
+import "compact_formats.proto";
 
 message Empty {
 }

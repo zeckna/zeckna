@@ -1,14 +1,22 @@
-import {Wallet, AddressType, SyncServiceClient} from '@zeckna/sdk';
+import {
+  Wallet,
+  AddressType,
+  BlocksSinceResponse,
+  ShieldedBalanceResponse,
+} from '@zeckna/sdk';
 import {StorageService, StoredAddress} from './StorageService';
 import {SYNC_SERVICE_URL} from '../config';
 
 export class WalletService {
   private wallet: Wallet;
-  private syncClient: SyncServiceClient;
+  private latestSyncHeight: number;
+  private lastBalance: number;
 
   constructor() {
     this.wallet = new Wallet();
-    this.syncClient = new SyncServiceClient(SYNC_SERVICE_URL);
+    this.wallet.setSyncServiceUrl(SYNC_SERVICE_URL);
+    this.latestSyncHeight = 0;
+    this.lastBalance = 0;
   }
 
   private toStoredAddress(address: {
@@ -44,6 +52,7 @@ export class WalletService {
 
     const fvk = await this.wallet.exportFullViewingKey(0);
     await StorageService.storeViewingKey(fvk);
+    await StorageService.storeLastSyncStatus('idle', new Date().toISOString());
 
     return mnemonic;
   }
@@ -64,6 +73,7 @@ export class WalletService {
 
     const fvk = await this.wallet.exportFullViewingKey(0);
     await StorageService.storeViewingKey(fvk);
+    await StorageService.storeLastSyncStatus('idle', new Date().toISOString());
   }
 
   /**
@@ -86,6 +96,7 @@ export class WalletService {
 
       const fvk = await this.wallet.exportFullViewingKey(0);
       await StorageService.storeViewingKey(fvk);
+      await StorageService.storeLastSyncStatus('idle', new Date().toISOString());
 
       return true;
     } catch {
@@ -111,6 +122,14 @@ export class WalletService {
     return this.wallet.getBalance(target);
   }
 
+  private async fetchBalance(viewingKey: string, primary: StoredAddress): Promise<ShieldedBalanceResponse> {
+    return this.wallet.fetchShieldedBalance(primary.address, viewingKey);
+  }
+
+  private async fetchIncrementalBlocks(startHeight: number): Promise<BlocksSinceResponse> {
+    return this.wallet.fetchBlocksSince(startHeight, 100);
+  }
+
   async syncShieldedBalance(): Promise<number> {
     const viewingKey = await StorageService.getViewingKey();
     const primary = await this.getPrimaryAddress();
@@ -119,11 +138,28 @@ export class WalletService {
       throw new Error('Wallet not initialized for sync');
     }
 
-    const result = await this.syncClient.getShieldedBalance(primary.address, viewingKey);
-    if (result.latestHeight) {
-      await StorageService.storeLastSyncHeight(result.latestHeight);
+    await StorageService.storeLastSyncStatus('syncing', new Date().toISOString());
+
+    try {
+      const lastHeight = (await StorageService.getLastSyncHeight()) ?? 0;
+      const [balance, blocks] = await Promise.all([
+        this.fetchBalance(viewingKey, primary),
+        this.fetchIncrementalBlocks(lastHeight),
+      ]);
+
+      if (blocks.latestHeight) {
+        await StorageService.storeLastSyncHeight(blocks.latestHeight);
+        this.latestSyncHeight = blocks.latestHeight;
+      }
+
+      await StorageService.storeLastSyncStatus('idle', new Date().toISOString());
+      this.lastBalance = balance.balance.valueZat;
+
+      return balance.balance.valueZat;
+    } catch (error) {
+      await StorageService.storeLastSyncStatus('error', new Date().toISOString());
+      throw error;
     }
-    return result.balance.valueZat;
   }
 
   /**
@@ -154,6 +190,26 @@ export class WalletService {
   async getPrimaryAddress(): Promise<StoredAddress | undefined> {
     const stored = await this.getAddresses();
     return stored[0];
+  }
+
+  async getLastSyncInfo(): Promise<{
+    lastHeight: number;
+    lastBalance: number;
+    status: 'idle' | 'syncing' | 'error';
+    updatedAt: string;
+  }> {
+    const storedHeight = await StorageService.getLastSyncHeight();
+    const status = (await StorageService.getLastSyncStatus()) ?? {
+      status: 'idle' as const,
+      timestamp: new Date(0).toISOString(),
+    };
+
+    return {
+      lastHeight: this.latestSyncHeight || storedHeight || 0,
+      lastBalance: this.lastBalance,
+      status: status.status,
+      updatedAt: status.timestamp,
+    };
   }
 }
 

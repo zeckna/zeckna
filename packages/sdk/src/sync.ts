@@ -29,6 +29,21 @@ export interface ShieldedBalanceResponse {
   latestHeight?: number;
 }
 
+export interface BlockSummary {
+  height: number;
+  hash: string;
+  time?: number;
+  transactions: number;
+}
+
+export interface BlocksSinceResponse {
+  startHeight: number;
+  endHeight: number;
+  latestHeight: number;
+  limit: number;
+  blocks: BlockSummary[];
+}
+
 export class SyncServiceClient {
   private baseUrl: string;
 
@@ -61,6 +76,20 @@ export class SyncServiceClient {
     return request(`${this.baseUrl}/v1/lightwalletd/blocks`, {
       method: 'POST',
       body: JSON.stringify({ startHeight, endHeight })
+    });
+  }
+
+  async getBlocksSince(sinceHeight: number, limit?: number): Promise<BlocksSinceResponse> {
+    if (sinceHeight < 0 || !Number.isFinite(sinceHeight)) {
+      throw new Error('sinceHeight must be a non-negative number');
+    }
+
+    return request<BlocksSinceResponse>(`${this.baseUrl}/v1/lightwalletd/blocks/since`, {
+      method: 'POST',
+      body: JSON.stringify({
+        sinceHeight,
+        ...(Number.isFinite(limit) ? { limit } : {})
+      })
     });
   }
 }

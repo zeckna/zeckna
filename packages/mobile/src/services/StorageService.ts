@@ -6,6 +6,7 @@ const WALLET_INITIALIZED_KEY = 'wallet_initialized';
 const WALLET_ADDRESSES_KEY = 'wallet_addresses';
 const VIEWING_KEY_KEY = 'wallet_viewing_key';
 const LAST_SYNC_HEIGHT_KEY = 'wallet_last_sync_height';
+const LAST_SYNC_STATUS_KEY = 'wallet_last_sync_status';
 
 export interface StoredAddress {
   address: string;
@@ -104,6 +105,22 @@ export class StorageService {
       return value ? JSON.parse(value) : [];
     } catch {
       return [];
+    }
+  }
+
+  static async storeLastSyncStatus(status: 'idle' | 'syncing' | 'error', timestamp: string): Promise<void> {
+    await EncryptedStorage.setItem(
+      LAST_SYNC_STATUS_KEY,
+      JSON.stringify({ status, timestamp })
+    );
+  }
+
+  static async getLastSyncStatus(): Promise<{ status: 'idle' | 'syncing' | 'error'; timestamp: string } | null> {
+    try {
+      const value = await EncryptedStorage.getItem(LAST_SYNC_STATUS_KEY);
+      return value ? JSON.parse(value) : null;
+    } catch {
+      return null;
     }
   }
 

@@ -15,6 +15,7 @@ export * from './wallet';
 
 // Sync service client
 export * from './sync';
+export type { BlocksSinceResponse, BlockSummary, ShieldedBalanceResponse } from './sync';
 
 // Initialize WASM on import (optional - can be called manually)
 export { initWasm } from './wasm-loader';

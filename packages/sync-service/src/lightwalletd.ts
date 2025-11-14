@@ -28,7 +28,7 @@ const loaderOptions: protoLoader.Options = {
 const packageDefinition: PackageDefinition = protoLoader.loadSync(PROTO_PATH, loaderOptions);
 const protoDescriptor = loadPackageDefinition(packageDefinition) as any;
 
-type CompactBlock = {
+export type CompactBlock = {
   height: string | number;
   hash: Buffer;
   prev_hash: Buffer;
@@ -64,7 +64,23 @@ interface CompactTxStreamerClient {
   GetBlockRange(request: { start: BlockID; end: BlockID }): ClientReadableStream<CompactBlock>;
 }
 
-export class LightwalletdClient {
+export interface LightwalletdClientInterface {
+  getLatestBlock(): Promise<{ height: number; hash: string }>;
+  getInfo(): Promise<any>;
+  getBalance(address: string, viewingKey: string): Promise<Balance>;
+  getBlockRange(startHeight: number, endHeight: number): Promise<CompactBlock[]>;
+  getBlocksSince(
+    sinceHeight: number,
+    limit: number
+  ): Promise<{
+    startHeight: number;
+    endHeight: number;
+    latestHeight: number;
+    blocks: CompactBlock[];
+  }>;
+}
+
+export class LightwalletdClient implements LightwalletdClientInterface {
   private client: CompactTxStreamerClient;
 
   constructor() {
@@ -82,8 +98,35 @@ export class LightwalletdClient {
     );
   }
 
+  private async callWithRetry<T>(operation: string, fn: () => Promise<T>): Promise<T> {
+    const attempts = Math.max(1, config.retry.attempts);
+    const baseDelay = Math.max(0, config.retry.baseDelayMs);
+    let lastError: unknown = null;
+
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        return await fn();
+      } catch (error) {
+        lastError = error;
+        logger.warn({ error, attempt, operation }, 'lightwalletd call failed');
+
+        if (attempt === attempts) {
+          throw error;
+        }
+
+        const delay = baseDelay * attempt;
+        if (delay > 0) {
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+      }
+    }
+
+    // This should never be hit, but TypeScript expects a return.
+    throw lastError instanceof Error ? lastError : new Error('Unknown lightwalletd error');
+  }
+
   async getLatestBlock(): Promise<{ height: number; hash: string }> {
-    return new Promise((resolve, reject) => {
+    return this.callWithRetry('GetLatestBlock', () => new Promise((resolve, reject) => {
       this.client.GetLatestBlock({}, (err, response) => {
         if (err) {
           reject(err);
@@ -95,11 +138,11 @@ export class LightwalletdClient {
           hash: Buffer.from(response.hash ?? []).toString('base64')
         });
       });
-    });
+    }));
   }
 
   async getInfo(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return this.callWithRetry('GetLightdInfo', () => new Promise((resolve, reject) => {
       this.client.GetLightdInfo({}, (err, response) => {
         if (err) {
           reject(err);
@@ -108,11 +151,11 @@ export class LightwalletdClient {
 
         resolve(response);
       });
-    });
+    }));
   }
 
   async getBalance(address: string, viewingKey: string): Promise<Balance> {
-    return new Promise((resolve, reject) => {
+    return this.callWithRetry('GetBalance', () => new Promise((resolve, reject) => {
       this.client.GetBalance({ address, viewing_key: viewingKey }, (err, response) => {
         if (err) {
           reject(err);
@@ -121,13 +164,13 @@ export class LightwalletdClient {
 
         resolve(response);
       });
-    });
+    }));
   }
 
   async getBlockRange(startHeight: number, endHeight: number): Promise<CompactBlock[]> {
-    const blocks: CompactBlock[] = [];
+    return this.callWithRetry('GetBlockRange', () => new Promise((resolve, reject) => {
+      const blocks: CompactBlock[] = [];
 
-    return new Promise((resolve, reject) => {
       const stream = this.client.GetBlockRange({
         start: { height: startHeight, hash: Buffer.alloc(0) },
         end: { height: endHeight, hash: Buffer.alloc(0) }
@@ -142,6 +185,32 @@ export class LightwalletdClient {
       });
 
       stream.on('end', () => resolve(blocks));
-    });
+    }));
+  }
+
+  async getBlocksSince(sinceHeight: number, limit: number) {
+    const startHeight = sinceHeight + 1;
+    const latest = await this.getLatestBlock();
+
+    if (startHeight > latest.height) {
+      return {
+        startHeight,
+        endHeight: startHeight - 1,
+        latestHeight: latest.height,
+        blocks: [] as CompactBlock[]
+      };
+    }
+
+    const normalizedLimit = Math.max(1, limit);
+    const endHeight = Math.min(startHeight + normalizedLimit - 1, latest.height);
+    const blocks = await this.getBlockRange(startHeight, endHeight);
+
+    return {
+      startHeight,
+      endHeight,
+      latestHeight: latest.height,
+      blocks
+    };
   }
 }
+
