@@ -4,7 +4,7 @@ import {
   BlocksSinceResponse,
   ShieldedBalanceResponse,
 } from '@zeckna/sdk';
-import {StorageService, StoredAddress} from './StorageService';
+import {StorageService, StoredAddress, SyncedBlockSummary} from './StorageService';
 import {SYNC_SERVICE_URL} from '../config';
 
 export class WalletService {
@@ -130,6 +130,23 @@ export class WalletService {
     return this.wallet.fetchBlocksSince(startHeight, 100);
   }
 
+  private async storeSyncedBlocks(blocks: BlocksSinceResponse): Promise<void> {
+    if (!blocks.blocks.length) {
+      return;
+    }
+
+    const syncedAt = new Date().toISOString();
+    const summaries: SyncedBlockSummary[] = blocks.blocks.map((block) => ({
+      height: Number(block.height),
+      hash: block.hash,
+      time: typeof block.time === 'number' ? block.time : undefined,
+      transactions: block.transactions,
+      syncedAt,
+    }));
+
+    await StorageService.appendSyncedBlocks(summaries);
+  }
+
   async syncShieldedBalance(): Promise<number> {
     const viewingKey = await StorageService.getViewingKey();
     const primary = await this.getPrimaryAddress();
@@ -152,6 +169,7 @@ export class WalletService {
         this.latestSyncHeight = blocks.latestHeight;
       }
 
+      await this.storeSyncedBlocks(blocks);
       await StorageService.storeLastSyncStatus('idle', new Date().toISOString());
       this.lastBalance = balance.balance.valueZat;
 
@@ -190,6 +208,10 @@ export class WalletService {
   async getPrimaryAddress(): Promise<StoredAddress | undefined> {
     const stored = await this.getAddresses();
     return stored[0];
+  }
+
+  async getTransactions(): Promise<SyncedBlockSummary[]> {
+    return StorageService.getSyncedBlocks();
   }
 
   async getLastSyncInfo(): Promise<{

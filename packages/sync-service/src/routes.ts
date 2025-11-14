@@ -33,8 +33,8 @@ export const createLightwalletdRouter = (
       const latest = await client.getLatestBlock();
       res.json({ status: 'ok', latestHeight: latest.height });
     } catch (error) {
-      logger.error({ error }, 'Health check failed');
-      res.status(503).json({ status: 'error', message: (error as Error).message });
+      logger.warn({ error }, 'Health check degraded');
+      res.json({ status: 'degraded', message: (error as Error).message });
     }
   });
 

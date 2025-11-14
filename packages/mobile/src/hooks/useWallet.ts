@@ -1,11 +1,19 @@
-import {useState, useEffect, useCallback, useMemo} from 'react';
+import {useState, useEffect, useCallback, useMemo, useRef} from 'react';
+import {AppState, AppStateStatus} from 'react-native';
 import {walletService} from '../services/WalletService';
-import {StorageService, StoredAddress} from '../services/StorageService';
+import {StorageService, StoredAddress, SyncedBlockSummary} from '../services/StorageService';
+
+const SYNC_INTERVAL_MS = 60 * 1000;
 
 interface SyncState {
   status: 'idle' | 'syncing' | 'error';
   updatedAt: string;
   latestHeight: number;
+}
+
+interface SyncOptions {
+  force?: boolean;
+  errorMessage?: string;
 }
 
 export function useWallet() {
@@ -20,6 +28,14 @@ export function useWallet() {
     latestHeight: 0,
   });
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [transactions, setTransactions] = useState<SyncedBlockSummary[]>([]);
+  const addressesRef = useRef<StoredAddress[]>([]);
+  const isSyncingRef = useRef(false);
+
+  const refreshTransactions = useCallback(async () => {
+    const history = await walletService.getTransactions();
+    setTransactions(history);
+  }, []);
 
   const updateSyncInfo = useCallback(async () => {
     const info = await walletService.getLastSyncInfo();
@@ -28,31 +44,60 @@ export function useWallet() {
       updatedAt: info.updatedAt,
       latestHeight: info.lastHeight,
     });
-    if (info.status === 'error') {
-      setSyncError('Failed to sync with network');
-    } else {
-      setSyncError(null);
-    }
+    setSyncError((prev) =>
+      info.status === 'error' ? prev ?? 'Failed to sync with network' : null
+    );
   }, []);
+
+  const runSync = useCallback(
+    async (options: SyncOptions = {}) => {
+      const {force = false, errorMessage} = options;
+      const hasPrimaryAddress = addressesRef.current.length > 0;
+
+      if (isSyncingRef.current) {
+        return;
+      }
+
+      if (!force && (!isInitialized || !hasPrimaryAddress)) {
+        return;
+      }
+
+      isSyncingRef.current = true;
+      setSyncState((prev) => ({
+        ...prev,
+        status: 'syncing',
+        updatedAt: new Date().toISOString(),
+      }));
+
+      try {
+        const bal = await walletService.syncShieldedBalance();
+        setBalance(bal);
+        setSyncError(null);
+      } catch (error) {
+        console.error('Error syncing balance:', error);
+        setSyncError(errorMessage ?? 'Unable to sync with network');
+      } finally {
+        await updateSyncInfo();
+        await refreshTransactions();
+        isSyncingRef.current = false;
+      }
+    },
+    [isInitialized, updateSyncInfo, refreshTransactions]
+  );
 
   const loadAddresses = useCallback(async () => {
     const stored = await walletService.getAddresses();
+    addressesRef.current = stored;
     setAddresses(stored);
     setPrimaryAddress(stored[0] ?? null);
 
     if (stored[0]) {
-      try {
-        const bal = await walletService.syncShieldedBalance();
-        setBalance(bal);
-      } catch (error) {
-        console.error('Error syncing balance:', error);
-        setSyncError('Unable to fetch shielded balance');
-        await StorageService.storeLastSyncStatus('error', new Date().toISOString());
-      } finally {
-        await updateSyncInfo();
-      }
+      await runSync({force: true, errorMessage: 'Unable to fetch shielded balance'});
+    } else {
+      await updateSyncInfo();
+      setTransactions([]);
     }
-  }, [updateSyncInfo]);
+  }, [runSync, updateSyncInfo]);
 
   const checkWalletInitialized = useCallback(async () => {
     try {
@@ -96,18 +141,8 @@ export function useWallet() {
   }, [loadAddresses]);
 
   const refreshBalance = useCallback(async () => {
-    try {
-      const bal = await walletService.syncShieldedBalance();
-      setBalance(bal);
-      setSyncError(null);
-    } catch (error) {
-      console.error('Error refreshing balance:', error);
-      setSyncError('Unable to refresh balance');
-      await StorageService.storeLastSyncStatus('error', new Date().toISOString());
-    } finally {
-      await updateSyncInfo();
-    }
-  }, [updateSyncInfo]);
+    await runSync({force: true, errorMessage: 'Unable to refresh balance'});
+  }, [runSync]);
 
   const generateNewShieldedAddress = useCallback(async () => {
     const addr = await walletService.generateNewShieldedAddress();
@@ -121,7 +156,51 @@ export function useWallet() {
 
   useEffect(() => {
     updateSyncInfo();
-  }, [updateSyncInfo]);
+    refreshTransactions();
+  }, [updateSyncInfo, refreshTransactions]);
+
+  useEffect(() => {
+    if (!isInitialized || addressesRef.current.length === 0) {
+      return;
+    }
+
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    const clearTimer = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    const startTimer = () => {
+      clearTimer();
+      intervalId = setInterval(() => {
+        runSync();
+      }, SYNC_INTERVAL_MS);
+    };
+
+    const handleAppStateChange = (nextState: AppStateStatus) => {
+      if (nextState === 'active') {
+        runSync();
+        startTimer();
+      } else {
+        clearTimer();
+      }
+    };
+
+    if (AppState.currentState === 'active') {
+      runSync();
+      startTimer();
+    }
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      clearTimer();
+      subscription.remove();
+    };
+  }, [isInitialized, runSync, addresses.length]);
 
   const hasSyncIssue = useMemo(() => syncState.status === 'error' || !!syncError, [
     syncState.status,
@@ -137,6 +216,7 @@ export function useWallet() {
     syncState,
     syncError,
     hasSyncIssue,
+    transactions,
     checkWalletInitialized,
     initializeNew,
     initializeFromMnemonic,

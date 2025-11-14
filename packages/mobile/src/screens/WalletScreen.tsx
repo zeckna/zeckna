@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useWallet} from '../hooks/useWallet';
@@ -17,6 +18,7 @@ export default function WalletScreen() {
   const {
     balance,
     addresses,
+    transactions,
     refreshBalance,
     generateNewShieldedAddress,
     syncState,
@@ -44,11 +46,16 @@ export default function WalletScreen() {
         <Text style={styles.balanceAmount}>{zecBalance.toFixed(8)} ZEC</Text>
         <PrivacyBadge isShielded={true} />
         <View style={styles.syncContainer}>
-          <Text style={styles.syncLabel}>
-            {syncState.status === 'syncing'
-              ? 'Syncing with Zcash network...'
-              : `Last synced: ${new Date(syncState.updatedAt).toLocaleString()}`}
-          </Text>
+          <View style={styles.syncStatusRow}>
+            {syncState.status === 'syncing' && (
+              <ActivityIndicator size="small" color="#4A90E2" style={styles.syncSpinner} />
+            )}
+            <Text style={styles.syncLabel}>
+              {syncState.status === 'syncing'
+                ? 'Syncing with Zcash network...'
+                : `Last synced: ${new Date(syncState.updatedAt).toLocaleString()}`}
+            </Text>
+          </View>
           {hasSyncIssue ? (
             <Text style={styles.syncErrorText}>{syncError ?? 'Sync issue detected'}</Text>
           ) : (
@@ -108,7 +115,26 @@ export default function WalletScreen() {
 
       <View style={styles.transactionsContainer}>
         <Text style={styles.sectionTitle}>Recent Transactions</Text>
-        <Text style={styles.emptyText}>No transactions yet</Text>
+        {transactions.length === 0 ? (
+          <Text style={styles.emptyText}>No transactions yet</Text>
+        ) : (
+          transactions.map((tx) => (
+            <View key={`${tx.height}-${tx.hash}`} style={styles.transactionItem}>
+              <View style={styles.transactionMeta}>
+                <Text style={styles.transactionHeight}>Block #{tx.height}</Text>
+                <Text style={styles.transactionHash}>{tx.hash.slice(0, 18)}...</Text>
+              </View>
+              <View style={styles.transactionDetails}>
+                <Text style={styles.transactionCount}>
+                  {tx.transactions} tx{tx.transactions === 1 ? '' : 's'}
+                </Text>
+                <Text style={styles.transactionTime}>
+                  {new Date(tx.syncedAt).toLocaleString()}
+                </Text>
+              </View>
+            </View>
+          ))
+        )}
       </View>
 
       <TouchableOpacity
@@ -144,6 +170,13 @@ const styles = StyleSheet.create({
   syncContainer: {
     marginTop: 12,
     alignItems: 'center',
+  },
+  syncStatusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  syncSpinner: {
+    marginRight: 6,
   },
   syncLabel: {
     fontSize: 12,
@@ -216,6 +249,43 @@ const styles = StyleSheet.create({
   },
   transactionsContainer: {
     padding: 20,
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f4f6f8',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+  },
+  transactionMeta: {
+    flex: 1,
+    marginRight: 12,
+  },
+  transactionHeight: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#34495e',
+  },
+  transactionHash: {
+    fontSize: 12,
+    color: '#7f8c8d',
+    marginTop: 4,
+    fontFamily: 'monospace',
+  },
+  transactionDetails: {
+    alignItems: 'flex-end',
+  },
+  transactionCount: {
+    fontSize: 12,
+    color: '#2c3e50',
+    fontWeight: '600',
+  },
+  transactionTime: {
+    fontSize: 11,
+    color: '#7f8c8d',
+    marginTop: 4,
   },
   emptyText: {
     color: '#999',

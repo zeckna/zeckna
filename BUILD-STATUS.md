@@ -52,7 +52,7 @@
 | `@zeckna/ai`     | `pnpm --filter @zeckna/ai test`              | ✅ pass |
 | `@zeckna/mobile` | `pnpm --filter @zeckna/mobile test`          | ✅ pass |
 | `@zeckna/docs`   | `pnpm --filter @zeckna/docs build`           | ✅ pass |
-| `@zeckna/sync-service` | `pnpm --filter @zeckna/sync-service build` | ✅ pass |
+| `@zeckna/sync-service` | `pnpm --filter @zeckna/sync-service test` / `build` | ✅ pass |
 
 ## Next Steps
 

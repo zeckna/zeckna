@@ -46,7 +46,14 @@ describe('WalletService', () => {
       endHeight: 250,
       latestHeight: 250,
       limit: 100,
-      blocks: [],
+      blocks: [
+        {
+          height: 250,
+          hash: 'hash250',
+          time: 1700000000,
+          transactions: 3,
+        },
+      ],
     });
 
     jest.spyOn(StorageService, 'getViewingKey').mockResolvedValue('vk1');
@@ -66,6 +73,9 @@ describe('WalletService', () => {
     const heightSpy = jest
       .spyOn(StorageService, 'storeLastSyncHeight')
       .mockResolvedValue();
+    const appendSpy = jest
+      .spyOn(StorageService, 'appendSyncedBlocks')
+      .mockResolvedValue();
 
     const balance = await walletService.syncShieldedBalance();
 
@@ -77,6 +87,15 @@ describe('WalletService', () => {
     );
     expect(heightSpy).toHaveBeenCalledWith(250);
     expect(statusSpy).toHaveBeenLastCalledWith('idle', expect.any(String));
+    expect(appendSpy).toHaveBeenCalled();
+    expect(appendSpy.mock.calls[0][0][0]).toEqual(
+      expect.objectContaining({
+        height: 250,
+        hash: 'hash250',
+        transactions: 3,
+        syncedAt: expect.any(String),
+      }),
+    );
   });
 
   it('marks sync status as error when balance fetch fails', async () => {
@@ -103,6 +122,9 @@ describe('WalletService', () => {
     const statusSpy = jest
       .spyOn(StorageService, 'storeLastSyncStatus')
       .mockResolvedValue();
+    const appendSpy = jest
+      .spyOn(StorageService, 'appendSyncedBlocks')
+      .mockResolvedValue();
 
     await expect(walletService.syncShieldedBalance()).rejects.toThrow(
       'network down',
@@ -113,6 +135,7 @@ describe('WalletService', () => {
       expect.any(String),
     );
     expect(statusSpy).toHaveBeenLastCalledWith('error', expect.any(String));
+    expect(appendSpy).not.toHaveBeenCalled();
   });
 });
 
